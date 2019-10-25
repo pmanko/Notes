@@ -1,10 +1,12 @@
 # SEDISH
 https://github.com/sedish
 
+![SEDISH Architecture](sedish-arch.png)
+
 ## OpenHI
 https://wiki.ohie.org/display/documents/OpenHIE+Introduction        E
 
-![OpenHIE Architecture](sedish-arch.png)
+![OpenHIE Architecture](openhie-arch.png)
 
 ## SHR
 - https://wiki.ohie.org/pages/viewpage.action?pageId=19464697
