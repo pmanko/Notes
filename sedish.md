@@ -3,7 +3,7 @@ https://github.com/sedish
 
 ![SEDISH Architecture](sedish-arch.png)
 
-## OpenHI
+## OpenHIE
 https://wiki.ohie.org/display/documents/OpenHIE+Introduction        E
 
 ![OpenHIE Architecture](openhie-arch.png)
@@ -47,6 +47,11 @@ A **phase 3** OpenHIE SHR must implement the following:
 
 ## MPI / Client Registry
 https://wiki.ohie.org/display/SUB/Client+Registry+Community
+https://github.com/SEDISH/ohie-cr
+
+National Fingerprint Server
+
+OpenEMPI - https://www.openempi.org/support/
 
 ## DHIS2
 https://github.com/SEDISH/ohie-fr
@@ -54,3 +59,9 @@ https://wiki.ohie.org/display/SUB/Facility+Registry+Community
 
 
 ## Interoperability Layer
+
+## Entity Matching
+
+## Monitoring
+
+## N
