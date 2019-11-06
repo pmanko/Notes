@@ -9,6 +9,7 @@
   - [Docker Setup](#docker-setup)
 - [FHIR Module Version Upgrade](#fhir-module-version-upgrade)
 - [Sync 2.0](#sync-20)
+- [Lab Workflow Mapping](#lab-workflow-mapping)
 
 # SEDISH Setup
 https://github.com/SEDISH
@@ -81,6 +82,39 @@ https://github.com/openmrs/openmrs-module-fhir/pull/213
 
 # Sync 2.0
 https://github.com/openmrs/openmrs-module-fhir/pull/142/commits/d6784cbd1a70efec2b412ab3b2d8abc099e9b686
+
+# Lab Workflow Mapping
+![STU3 Diagnostics Module](http://hl7.org/fhir/STU3/diagnostic-module-resources.png)
+
+STU3:  
+http://hl7.org/fhir/STU3/diagnostics-module.html 
+
+R4:  
+http://hl7.org/fhir/diagnostics-module.html
+
+**Example Workflow**
+https://www.hl7.org/fhir/workflow-communications.html#12.6.2.1
+
+**Required Resources**
+- `ProcedureRequest`: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/ProcedureRequestService.java
+- `DiagnosticReport`: https://github.com/openmrs/openmrs-module-fhir/tree/master/api/src/main/java/org/openmrs/module/fhir/api/diagnosticreport
+- `Specimen`: http://hl7.org/fhir/STU3/specimen.html (no OpenMRS implementation)
+- `Sequence`: http://hl7.org/fhir/STU3/sequence.html (no OpenMRS implementation)
+- `ImagingStudy`: (no OpenMRS implementation)
+- `ImagingManifest`: (no OpenMRS implementation)
+
+Required by Workflow: 
+- `Task`: https://www.hl7.org/fhir/task.html (no OpenMRS Implementation)
+
+**Changes in R4**
+![R4 Diagnostics Module](http://hl7.org/fhir/diagnostic-module-resources.png)
+
+- `ProcedureRequest` --> `ServiceRequest`
+- No `ImagingManifest` Resource
+- `Media` Resource added
+
+**OpenMRS Support Overview**
+https://docs.google.com/spreadsheets/d/13WF0Vv9wU7_JFDYFlDQh7vJwd6kJnm98eUtFvV5NuZg/edit#gid=0
 
 
 
