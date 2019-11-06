@@ -115,9 +115,3 @@ Required by Workflow:
 
 **OpenMRS Support Overview**
 https://docs.google.com/spreadsheets/d/13WF0Vv9wU7_JFDYFlDQh7vJwd6kJnm98eUtFvV5NuZg/edit#gid=0
-
-
-
-- [x] Clone all relevant IsantePlus modules and deploy to SDK server
-- [ ] Populate DB with IsantePlus concepts / data
-- [ ] 
