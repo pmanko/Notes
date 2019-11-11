@@ -9,7 +9,8 @@
   - [Docker Setup](#docker-setup)
 - [FHIR Module Version Upgrade](#fhir-module-version-upgrade)
 - [Sync 2.0](#sync-20)
-- [Lab Workflow Mapping](#lab-workflow-mapping)
+- [](#)
+  - [OpenMRS Support Overview](#openmrs-support-overview)
 
 # SEDISH Setup
 https://github.com/SEDISH
@@ -24,13 +25,12 @@ iSantePlus runs on the OpenMRS Ref App 2.5 distribution, and includes some modul
 
 
 ## Additional OpenMRS Modules in iSantePlus
-[Main iSantePlus Module](https://github.com/IsantePlus/openmrs-module-isanteplus)
-[iSantePlus Report Module](https://github.com/IsantePlus/openmrs-module-isanteplusreports)
-[Address Hierarchy Module](https://github.com/openmrs/openmrs-module-addresshierarchy)
-[Extended Internationalization Support Module](https://github.com/openmrs/openmrs-module-exti18n)
-[Haiti Core Module](https://github.com/openmrs/openmrs-module-haiticore)
-[XDS Sender Module](https://github.com/IsantePlus/openmrs-module-xds-sender)
-
+- [Main iSantePlus Module](https://github.com/IsantePlus/openmrs-module-isanteplus)
+- [iSantePlus Report Module](https://github.com/IsantePlus/openmrs-module-isanteplusreports)
+- [Address Hierarchy Module](https://github.com/openmrs/openmrs-module-addresshierarchy)
+- [Extended Internationalization Support Module](https://github.com/openmrs/openmrs-module-exti18n)
+- [Haiti Core Module](https://github.com/openmrs/openmrs-module-haiticore)
+- [XDS Sender Module](https://github.com/IsantePlus/openmrs-module-xds-sender)
 
 ## Database Dump
 https://bintray.com/isanteplus/clean-database/download_file?file_path=Dump20190331.sql.zip
@@ -42,7 +42,7 @@ https://bintray.com/isanteplus/clean-database/download_file?file_path=modules.zi
 https://wiki.openmrs.org/display/docs/OpenMRS+SDK#OpenMRSSDK-Distributions
 https://github.com/IsantePlus/openmrs-distro-isanteplus
 
-`mvn openmrs-sdk:setup -DserverId=isanteplus-dev -Ddistro=referenceapplication:2.5` 
+`mvn openmrs-sdk:setup -DserverId=isanteplus-dev -Ddistro=referenceapplication:2.5 -DdbUri=jdbc:mysql://localhost:3306/isanteplus-dev -DdbUser=isante -DdbPassword=isante` 
 
 In each module repo folder that you want to develop on and deploy to the server, run the following:
 `mvn openmrs-sdk:deploy -DserverId=isanteplus-dev`
@@ -83,35 +83,6 @@ https://github.com/openmrs/openmrs-module-fhir/pull/213
 # Sync 2.0
 https://github.com/openmrs/openmrs-module-fhir/pull/142/commits/d6784cbd1a70efec2b412ab3b2d8abc099e9b686
 
-# Lab Workflow Mapping
-![STU3 Diagnostics Module](http://hl7.org/fhir/STU3/diagnostic-module-resources.png)
-
-STU3:  
-http://hl7.org/fhir/STU3/diagnostics-module.html 
-
-R4:  
-http://hl7.org/fhir/diagnostics-module.html
-
-**Example Workflow**
-https://www.hl7.org/fhir/workflow-communications.html#12.6.2.1
-
-**Required Resources**
-- `ProcedureRequest`: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/ProcedureRequestService.java
-- `DiagnosticReport`: https://github.com/openmrs/openmrs-module-fhir/tree/master/api/src/main/java/org/openmrs/module/fhir/api/diagnosticreport
-- `Specimen`: http://hl7.org/fhir/STU3/specimen.html (no OpenMRS implementation)
-- `Sequence`: http://hl7.org/fhir/STU3/sequence.html (no OpenMRS implementation)
-- `ImagingStudy`: (no OpenMRS implementation)
-- `ImagingManifest`: (no OpenMRS implementation)
-
-Required by Workflow: 
-- `Task`: https://www.hl7.org/fhir/task.html (no OpenMRS Implementation)
-
-**Changes in R4**
-![R4 Diagnostics Module](http://hl7.org/fhir/diagnostic-module-resources.png)
-
-- `ProcedureRequest` --> `ServiceRequest`
-- No `ImagingManifest` Resource
-- `Media` Resource added
-
-**OpenMRS Support Overview**
+# 
+## OpenMRS Support Overview
 https://docs.google.com/spreadsheets/d/13WF0Vv9wU7_JFDYFlDQh7vJwd6kJnm98eUtFvV5NuZg/edit#gid=0
