@@ -1,5 +1,15 @@
 # Lab Orders Workflow Implementation
 
+## Work Plan
+
+In order to implement this workflow, we need to have a couple of components working that currently have limited support in the OpenMRS FHIR Module. 
+
+Required Tasks --> Tickets:
+1. Implement the `Task` resource ([link](#the-task-resource))
+2. Fix/update the implementation of the `ProcedureRequest` resource
+3. Trigger creation of a `Task` and `ProcedureRequest` resource when a Lab order is created
+4. 
+
 ## iSantePlus and OpenELIS Integration
 
 ### Lab Workflow Mapping
@@ -28,7 +38,7 @@ Required by Workflow:
 - `Task`: https://www.hl7.org/fhir/task.html (no OpenMRS Implementation)
 
 
-### The `Task` resource**  
+### The `Task` resource 
 STU3: https://www.hl7.org/fhir/STU3/task.html  
 R4: https://www.hl7.org/fhir/task.html
 
@@ -38,7 +48,51 @@ In our workflow, the `Task` resource can keep track of the status of the **Lab O
 
 ![STU3-Task-State-Machine](http://hl7.org/fhir/STU3/task-state-machine.svg)
 
-Our workflow:
+
+**Required Fields**
+
+1. `Task.status` - [Valueset](https://hl7.org/fhir/2018Jan/valueset-task-status.html)
+2. `Task.intent` - [Valueset](https://hl7.org/fhir/2018Jan/valueset-request-intent.html)
+3. `Task.priority` - [Valueset](https://hl7.org/fhir/2018Jan/valueset-request-priority.html)
+
+**Other Possible Fields**
+https://hl7.org/fhir/2018Jan/task.html#tx
+
+1. `Task.statusReason`: (Codable Concept) 
+   > Codes to identify the reason for current status. These will typically be specific to a particular workflow.	
+2. `Task.businessStatus`: (Codable Concept) 
+   > The domain-specific business-contextual sub-state of the task. For example: "Blood drawn", "IV inserted", "Awaiting physician signature", etc.
+3. `Task.code`:
+   > Codes to identify what the task involves. These will typically be specific to a particular workflow.
+4. `Task.performerType`:(Codable Concept) [Valueset](https://hl7.org/fhir/2018Jan/valueset-task-performer-type.html)
+
+**HAPI Task Class**  
+https://hapifhir.io/apidocs-dstu3/org/hl7/fhir/dstu3/model/Task.html
+
+### The `ProcedureRequest` Resource
+STU3:  
+http://hl7.org/fhir/STU3/procedurerequest.html
+https://hapifhir.io/apidocs-dstu3/org/hl7/fhir/dstu3/model/ProcedureRequest.html
+
+> `ProcedureRequest` is a record of a request for a procedure to be planned, proposed, or performed, as distinguished by the ProcedureRequest.intent field value, with or on a patient. 
+
+> The procedure will lead to either a `Procedure` or `DiagnosticReport`, that in turn may reference one or more `Observations`, that summarizes the performance of the procedures and associated documentation such as observations, images, findings that are relevant to the treatment/management of the subject.
+
+**Examples:** diagnostic tests/studies, endoscopic procedures, counseling, biopsies, therapies (e.g., physio-, social-, psychological-), (exploratory) surgeries or procedures, exercises, and other clinical interventions. 
+
+**OpenMRS FHIR Module Implementation**
+- Service: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/ProcedureRequestService.java
+- Service Implementation: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/impl/ProcedureRequestServiceImpl.java
+- Strategy: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/strategies/procedurerequest/ProcedureRequestStrategy.java
+- Utilities: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/util/FHIRProcedureRequestUtil.java
+
+### OpenMRS Lab Order Entry
+https://wiki.openmrs.org/display/projects/Order+Entry+End+User+Guide+for+Lab+Orders
+https://wiki.openmrs.org/display/docs/Lab+Order+Entry
+
+#### iSantePlus Lab Order Entry
+
+### Our workflow:
 1. A lab order is created in *iSantePlus*: 
 
 2. This lab order is mapped to a `ProcedureRequest` FHIR resource:
@@ -82,3 +136,15 @@ http://hl7.org/fhir/STU3/workflow-communications.html#commpatternslist
 - `Media` Resource added
 
 https://docs.google.com/document/d/1FEx8KUpxQfRP_TRtvAZvjTSt9BiB-nX4r9Qj-jvn528/edit
+
+
+## Testing and Notes
+
+Demo Data on the server: 
+How do I see the list of patients that get generated in the Database? Are there permissions that need to be set in order for all patients in a system to be visible? 
+
+I had to create the following patient in order to be able to query it using the FHIR Client. 
+
+Test Patient UUID: `d5cd0e30-5c37-4106-bc59-6f17c5a43240`
+
+Test Procedure UUID: 
