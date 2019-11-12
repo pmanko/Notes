@@ -1,18 +1,40 @@
-# Lab Orders Workflow Implementation
+# iSantePlus/OpenELIS Lab Orders Workflow
 
+- [iSantePlus/OpenELIS Lab Orders Workflow](#isanteplusopenelis-lab-orders-workflow)
+  - [Work Plan](#work-plan)
+  - [Lab Workflow Mapping](#lab-workflow-mapping)
+  - [The `Task` resource](#the-task-resource)
+  - [The `ProcedureRequest` Resource](#the-procedurerequest-resource)
+  - [OpenMRS Lab Order Entry](#openmrs-lab-order-entry)
+  - [iSantePlus Lab Order Entry](#isanteplus-lab-order-entry)
+  - [Overview of the Workflow:](#overview-of-the-workflow)
+  - [Testing and Notes](#testing-and-notes)
 ## Work Plan
+This workflow requires the *OpenMRS FHIR Module* to support, at minimum, the `ProcedureRequest`, `DiagnosticReport`, `Observation`, and `Task` resources. Currently, `ProcedureRequest`, `Observation`, and `DiagnosticReport` are, to some degree, implemented - as is detailed further down this document. 
 
-In order to implement this workflow, we need to have a couple of components working that currently have limited support in the OpenMRS FHIR Module. 
+To ensure the Lab Orders workflow is fully supported, we need to:
 
-Required Tasks --> Tickets:
-1. Implement the `Task` resource ([link](#the-task-resource))
-2. Fix/update the implementation of the `ProcedureRequest` resource
-3. Trigger creation of a `Task` and `ProcedureRequest` resource when a Lab order is created
-4. 
+1. Identify all of the data types that get generated when an *OpenMRS* lab order (`Order`? `TestOrder`?) gets created.
 
-## iSantePlus and OpenELIS Integration
+2. Identify any data types that are required by the *iSantePlus* <--> *OpenELIS* data flow that is currently implemented using HL7 V2 messages. 
+   
+3. Identify the corresponding attributes for all of required data types in the `Task` and `ProcedureRequest` resources. 
+   
+4. Test these mappings in the current implementation the *FHIR Module* to identify any gaps / issues that exist.
 
-### Lab Workflow Mapping
+5. Implement the FHIR `Task` resource in the FHIR module, and ensure OpenMRS can function as a repository for these resources. (This might require modifying the data model...)
+
+6. Trigger the creation of a FHIR `Task` resource with a `ProcedureRequest` attached as a `Task.input.value` when a Lab Order is created in *OpenMRS*. 
+   
+7. Send a `POST` request to *OpenELIS* with the `Task` resource? (unclear direction)
+
+8. Handle `Task` resource `PUT` requests from `OpenELIS` updating `Task.status`, `Task.statusReason`, `Task.businessStatus`, and `Task.output`. 
+   
+9. Handle a `completed` status for the `Task` by reading the `DiagnosticReport` attached to `Task.output` and saving it using the *OpenMRS* data model. 
+
+---
+
+## Lab Workflow Mapping
 
 ![STU3 Diagnostics Module](diagnostic-module-resources.png)
 
@@ -28,6 +50,7 @@ https://www.hl7.org/fhir/workflow-communications.html#12.6.2.1
 **Required Resources**
 - `ProcedureRequest`: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/ProcedureRequestService.java
 - `DiagnosticReport`: https://github.com/openmrs/openmrs-module-fhir/tree/master/api/src/main/java/org/openmrs/module/fhir/api/diagnosticreport
+- `Observation`: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/ObsService.java
 - `Specimen`: http://hl7.org/fhir/STU3/specimen.html (no OpenMRS implementation)
 - `Sequence`: http://hl7.org/fhir/STU3/sequence.html (no OpenMRS implementation)
 - `ImagingStudy`: (no OpenMRS implementation)
@@ -38,7 +61,7 @@ Required by Workflow:
 
 ---
 
-### The `Task` resource 
+## The `Task` resource 
 STU3: https://www.hl7.org/fhir/STU3/task.html  
 R4: https://www.hl7.org/fhir/task.html
 
@@ -70,7 +93,7 @@ https://hapifhir.io/apidocs-dstu3/org/hl7/fhir/dstu3/model/Task.html
 
 ---
 
-### The `ProcedureRequest` Resource
+## The `ProcedureRequest` Resource
 STU3:  
 http://hl7.org/fhir/STU3/procedurerequest.html
 https://hapifhir.io/apidocs-dstu3/org/hl7/fhir/dstu3/model/ProcedureRequest.html
@@ -97,13 +120,13 @@ The mapping from `ProcedureRequest` to `TestOrder` is implemented [here](https:/
 
 ---
 
-### OpenMRS Lab Order Entry
+## OpenMRS Lab Order Entry
 https://wiki.openmrs.org/display/projects/Order+Entry+End+User+Guide+for+Lab+Orders
 https://wiki.openmrs.org/display/docs/Lab+Order+Entry
 
-#### iSantePlus Lab Order Entry
+## iSantePlus Lab Order Entry
 
-### Our workflow:
+## Overview of the Workflow:
 1. A lab order is created in *iSantePlus*: 
 
 2. This lab order is mapped to a `ProcedureRequest` FHIR resource:
