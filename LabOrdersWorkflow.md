@@ -13,15 +13,14 @@ Required Tasks --> Tickets:
 ## iSantePlus and OpenELIS Integration
 
 ### Lab Workflow Mapping
-![STU3 Diagnostics Module](http://hl7.org/fhir/STU3/diagnostic-module-resources.png)
+
+![STU3 Diagnostics Module](diagnostic-module-resources.png)
 
 STU3:  
 http://hl7.org/fhir/STU3/diagnostics-module.html 
 
 R4:  
 http://hl7.org/fhir/diagnostics-module.html
-
---- 
 
 **Example Workflow**  
 https://www.hl7.org/fhir/workflow-communications.html#12.6.2.1
@@ -37,6 +36,7 @@ https://www.hl7.org/fhir/workflow-communications.html#12.6.2.1
 Required by Workflow: 
 - `Task`: https://www.hl7.org/fhir/task.html (no OpenMRS Implementation)
 
+---
 
 ### The `Task` resource 
 STU3: https://www.hl7.org/fhir/STU3/task.html  
@@ -46,8 +46,7 @@ R4: https://www.hl7.org/fhir/task.html
 
 In our workflow, the `Task` resource can keep track of the status of the **Lab Order** made in *iSantePlus*. The `Task` resource keeps track of inputs, outputs, and task status. The status represented by a given state in the following state machine: 
 
-![STU3-Task-State-Machine](http://hl7.org/fhir/STU3/task-state-machine.svg)
-
+![STU3-Task-State-Machine](task-state-machine.svg)
 
 **Required Fields**
 
@@ -69,6 +68,8 @@ https://hl7.org/fhir/2018Jan/task.html#tx
 **HAPI Task Class**  
 https://hapifhir.io/apidocs-dstu3/org/hl7/fhir/dstu3/model/Task.html
 
+---
+
 ### The `ProcedureRequest` Resource
 STU3:  
 http://hl7.org/fhir/STU3/procedurerequest.html
@@ -85,6 +86,16 @@ https://hapifhir.io/apidocs-dstu3/org/hl7/fhir/dstu3/model/ProcedureRequest.html
 - Service Implementation: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/impl/ProcedureRequestServiceImpl.java
 - Strategy: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/strategies/procedurerequest/ProcedureRequestStrategy.java
 - Utilities: https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/util/FHIRProcedureRequestUtil.java
+
+**Mappings**
+
+The OpenMRS `Order` and `TestOrder` objects are used in the [ProcedureRequest Strategy Implementation](https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/strategies/procedurerequest/ProcedureRequestStrategy.java)
+
+A `ProcedureRequest` is generated in [this util method](https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/util/FHIRProcedureRequestUtil.java#L47) from a `TestOrder` input. 
+
+The mapping from `ProcedureRequest` to `TestOrder` is implemented [here](https://github.com/openmrs/openmrs-module-fhir/blob/master/api/src/main/java/org/openmrs/module/fhir/api/util/FHIRProcedureRequestUtil.java#L71). The mappings use `BaseOpenMRSDataUtil.readBaseExtensionFields` and `BaseOpenMRSDataUtil.setBaseExtensionFields` - methods I have to look into still. 
+
+---
 
 ### OpenMRS Lab Order Entry
 https://wiki.openmrs.org/display/projects/Order+Entry+End+User+Guide+for+Lab+Orders
