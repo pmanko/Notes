@@ -15,6 +15,8 @@
 # SEDISH Setup
 https://github.com/SEDISH
 
+https://docs.google.com/document/d/1FEx8KUpxQfRP_TRtvAZvjTSt9BiB-nX4r9Qj-jvn528/edit
+
 ## Docker Demo Env
 https://github.com/SEDISH/demo-environment
 

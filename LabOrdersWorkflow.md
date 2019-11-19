@@ -163,13 +163,10 @@ https://wiki.openmrs.org/display/docs/Lab+Order+Entry
 http://hl7.org/fhir/STU3/workflow-communications.html#commpatternslist
 
 **Changes in R4**
-![R4 Diagnostics Module](http://hl7.org/fhir/diagnostic-module-resources.png)
 
 - `ProcedureRequest` --> `ServiceRequest`
 - No `ImagingManifest` Resource
 - `Media` Resource added
-
-https://docs.google.com/document/d/1FEx8KUpxQfRP_TRtvAZvjTSt9BiB-nX4r9Qj-jvn528/edit
 
 
 ## Testing and Notes
